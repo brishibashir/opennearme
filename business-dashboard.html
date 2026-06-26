@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard - OpenNearMe</title>
+    <meta name="description" content="Manage your business listing on OpenNearMe.">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        warm: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#1c1917',
+                            900: '#0c0a09',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .status-toggle {
+            transition: all 0.3s ease;
+        }
+        .status-toggle.open {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+        }
+        .status-toggle.closed {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-warm-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="flex items-center gap-2 text-2xl font-bold text-warm-900">
+                    <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
+                    <span>OpenNearMe</span>
+                </a>
+                
+                <div class="flex items-center gap-4">
+                    <button class="relative p-2 text-gray-600 hover:text-primary-500 transition">
+                        <i data-lucide="bell" class="w-6 h-6"></i>
+                        <span class="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                    </button>
+                    
+                    <div class="relative">
+                        <button onclick="toggleProfileMenu()" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition">
+                            <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-500 font-bold">
+                                JD
+                            </div>
+                            <span class="hidden md:block font-medium">John Doe</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </button>
+                        
+                        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2">
+                            <a href="/profile" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+                                <i data-lucide="user" class="w-5 h-5 text-gray-600"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="/business-dashboard" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+                                <i data-lucide="store" class="w-5 h-5 text-gray-600"></i>
+                                <span>My Businesses</span>
+                            </a>
+                            <a href="/reviews" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+                                <i data-lucide="star" class="w-5 h-5 text-gray-600"></i>
+                                <span>My Reviews</span>
+                            </a>
+                            <a href="/notifications" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+                                <i data-lucide="bell" class="w-5 h-5 text-gray-600"></i>
+                                <span>Notifications</span>
+                            </a>
+                            <hr class="my-2">
+                            <a href="/settings" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition">
+                                <i data-lucide="settings" class="w-5 h-5 text-gray-600"></i>
+                                <span>Settings</span>
+                            </a>
+                            <a href="/logout" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition text-red-500">
+                                <i data-lucide="log-out" class="w-5 h-5"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-warm-900 mb-2">Business Dashboard</h1>
+            <p class="text-gray-600">Manage your business listing and connect with customers</p>
+        </div>
+
+        <!-- Status Toggle (Top Bar) -->
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h2 class="text-xl font-bold text-warm-900 mb-1">The Evening Cup</h2>
+                    <p class="text-gray-600 text-sm">? Quiet Corners • New York, USA</p>
+                </div>
+                
+                <div class="flex items-center gap-6">
+                    <div class="text-center">
+                        <div id="statusText" class="text-lg font-bold text-warm-900">Open Now</div>
+                        <div class="text-sm text-gray-500">Last updated: 2 min ago</div>
+                    </div>
+                    
+                    <button id="statusToggle" onclick="toggleStatus()" class="status-toggle open w-48 h-20 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <span id="toggleText">?? OPEN</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-gray-100">
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    <span>Auto-closes in: <span id="countdown" class="font-semibold text-primary-500">11h 58m</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="eye" class="w-6 h-6 text-blue-500"></i>
+                    </div>
+                    <span class="text-sm text-green-500 font-semibold">? 12%</span>
+                </div>
+                <h3 class="text-3xl font-bold text-warm-900">1,234</h3>
+                <p class="text-gray-600 text-sm">Total Views</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="star" class="w-6 h-6 text-green-500"></i>
+                    </div>
+                    <span class="text-sm text-green-500 font-semibold">? 5%</span>
+                </div>
+                <h3 class="text-3xl font-bold text-warm-900">4.8</h3>
+                <p class="text-gray-600 text-sm">Average Rating</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="message-circle" class="w-6 h-6 text-purple-500"></i>
+                    </div>
+                    <span class="text-sm text-green-500 font-semibold">? 8%</span>
+                </div>
+                <h3 class="text-3xl font-bold text-warm-900">127</h3>
+                <p class="text-gray-600 text-sm">Total Reviews</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="phone" class="w-6 h-6 text-orange-500"></i>
+                    </div>
+                    <span class="text-sm text-green-500 font-semibold">? 15%</span>
+                </div>
+                <h3 class="text-3xl font-bold text-warm-900">89</h3>
+                <p class="text-gray-600 text-sm">Phone Calls</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <a href="/edit-business" class="bg-white rounded-xl shadow-md p-6 card-hover flex items-center gap-4">
+                <div class="w-14 h-14 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="edit" class="w-7 h-7 text-primary-500"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-warm-900 mb-1">Edit Business</h3>
+                    <p class="text-sm text-gray-600">Update your information</p>
+                </div>
+            </a>
+            
+            <a href="/upload-images" class="bg-white rounded-xl shadow-md p-6 card-hover flex items-center gap-4">
+                <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="camera" class="w-7 h-7 text-blue-500"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-warm-900 mb-1">Upload Images</h3>
+                    <p class="text-sm text-gray-600">Add new photos</p>
+                </div>
+            </a>
+            
+            <a href="/view-analytics" class="bg-white rounded-xl shadow-md p-6 card-hover flex items-center gap-4">
+                <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="bar-chart" class="w-7 h-7 text-purple-500"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-warm-900 mb-1">View Analytics</h3>
+                    <p class="text-sm text-gray-600">See detailed stats</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-warm-900">Recent Reviews</h2>
+                <a href="/all-reviews" class="text-primary-500 hover:text-primary-600 font-semibold text-sm">View All ?</a>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Review 1 -->
+                <div class="border-b border-gray-100 pb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-500 font-bold flex-shrink-0">
+                            SM
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-warm-900">Sarah M.</h4>
+                                    <div class="flex text-yellow-500 mt-1">
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-500">2 days ago</span>
+                            </div>
+                            <p class="text-gray-700 text-sm">"Found exactly what I needed at 2 AM. The warm lighting and gentle music made me feel instantly at peace."</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 2 -->
+                <div class="border-b border-gray-100 pb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 font-bold flex-shrink-0">
+                            JD
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-warm-900">John D.</h4>
+                                    <div class="flex text-yellow-500 mt-1">
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-500">1 week ago</span>
+                            </div>
+                            <p class="text-gray-700 text-sm">"This platform helped me discover new places I never knew existed. The Evening Cup has become my go-to spot."</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review 3 -->
+                <div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 font-bold flex-shrink-0">
+                            AK
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-warm-900">Ahmed K.</h4>
+                                    <div class="flex text-yellow-500 mt-1">
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-500">2 weeks ago</span>
+                            </div>
+                            <p class="text-gray-700 text-sm">"Finally, a simple way to find places open late! Game changer!"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Information -->
+        <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-warm-900 mb-6">Business Information</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-gray-700 mb-2">Contact Details</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-gray-400"></i>
+                            <span class="text-gray-700">+1 (212) 555-1234</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-gray-400"></i>
+                            <span class="text-gray-700">hello@theeveningcup.com</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="facebook" class="w-5 h-5 text-gray-400"></i>
+                            <a href="#" class="text-primary-500 hover:underline">facebook.com/theeveningcup</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-gray-700 mb-2">Location</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-gray-400 flex-shrink-0 mt-1"></i>
+                            <span class="text-gray-700">123 Quiet Street, Manhattan<br>New York, NY 10001<br>USA</span>
+                        </div>
+                        <a href="https://maps.google.com/?q=The+Evening+Cup+New+York" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:underline">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                            View on Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-100">
+                <h3 class="font-semibold text-gray-700 mb-3">Working Hours</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Mon-Thu:</span>
+                        <span class="font-medium">9AM - 11PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Friday:</span>
+                        <span class="font-medium text-primary-500">9AM - 12AM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Saturday:</span>
+                        <span class="font-medium text-primary-500">10AM - 12AM</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Sunday:</span>
+                        <span class="font-medium">10AM - 10PM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        
+        let isOpen = true;
+        let countdown = 12 * 60 * 60; // 12 hours in seconds
+        
+        function toggleStatus() {
+            isOpen = !isOpen;
+            const toggle = document.getElementById('statusToggle');
+            const text = document.getElementById('toggleText');
+            const statusText = document.getElementById('statusText');
+            
+            if (isOpen) {
+                toggle.classList.remove('closed');
+                toggle.classList.add('open');
+                text.textContent = '?? OPEN';
+                statusText.textContent = 'Open Now';
+                countdown = 12 * 60 * 60; // Reset countdown
+            } else {
+                toggle.classList.remove('open');
+                toggle.classList.add('closed');
+                text.textContent = '?? CLOSED';
+                statusText.textContent = 'Closed';
+                countdown = 0;
+            }
+        }
+        
+        // Countdown timer
+        setInterval(() => {
+            if (isOpen && countdown > 0) {
+                countdown--;
+                const hours = Math.floor(countdown / 3600);
+                const minutes = Math.floor((countdown % 3600) / 60);
+                document.getElementById('countdown').textContent = `${hours}h ${minutes}m`;
+                
+                if (countdown === 0) {
+                    toggleStatus(); // Auto-close
+                }
+            }
+        }, 1000);
+        
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('profileMenu');
+            const button = event.target.closest('button');
+            if (!button || !button.onclick) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
