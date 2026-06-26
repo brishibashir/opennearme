@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - OpenNearMe</title>
+    <meta name="description" content="Learn about OpenNearMe - your friendly guide to finding places open now, anytime, anywhere.">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#10b981', 600: '#059669', 700: '#047857' },
+                        warm: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#1c1917', 900: '#0c0a09' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-warm-50 text-warm-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="flex items-center gap-2 text-2xl font-bold text-warm-900">
+                    <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
+                    <span>OpenNearMe</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="/" class="text-warm-800 hover:text-primary-500 transition">Home</a>
+                    <a href="/about" class="text-primary-500 font-medium transition">About</a>
+                    <a href="/categories" class="text-warm-800 hover:text-primary-500 transition">Categories</a>
+                    <a href="/contact" class="text-warm-800 hover:text-primary-500 transition">Contact</a>
+                </div>
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="/login" class="px-4 py-2 text-warm-800 hover:text-primary-500 transition">Sign In</a>
+                    <a href="/register" class="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition">Sign Up</a>
+                </div>
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="/" class="block py-2 text-warm-800">Home</a>
+                <a href="/about" class="block py-2 text-primary-500 font-medium">About</a>
+                <a href="/categories" class="block py-2 text-warm-800">Categories</a>
+                <a href="/contact" class="block py-2 text-warm-800">Contact</a>
+                <div class="mt-4 flex flex-col gap-2">
+                    <a href="/login" class="block py-2 text-center text-warm-800">Sign In</a>
+                    <a href="/register" class="block py-2 text-center bg-primary-500 text-white rounded-full">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b border-gray-100">
+        <div class="container mx-auto px-4 py-4">
+            <nav class="flex items-center gap-2 text-sm text-gray-600">
+                <a href="/" class="hover:text-primary-500 transition">Home</a>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                <span class="text-warm-900 font-medium">About Us</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero text-white py-16 md:py-20">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                A Quiet Corner of the Internet ??
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+                We built OpenNearMe with a simple belief: everyone deserves to find a welcoming place, 
+                no matter what hour it is.
+            </p>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-warm-900 mb-6 text-center">Our Story </h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed text-lg">
+                    <p>
+                        OpenNearMe began as a small idea between friends who often found themselves 
+                        wandering quiet streets late at night, wondering: <em>"Where can I go right now?"</em>
+                    </p>
+                    <p>
+                        We realized that while the world never truly sleeps, finding the places that 
+                        welcome you at any hour can be surprisingly difficult. So we decided to build 
+                        a gentle guide — a place where you can discover businesses that are open and 
+                        ready to serve you, whenever you need them.
+                    </p>
+                    <p>
+                        Today, OpenNearMe connects thousands of people with the places they love — 
+                        from cozy cafes and caring pharmacies to friendly neighborhood shops and 
+                        reliable gas stations. And we're just getting started.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="py-16 bg-warm-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-warm-900 mb-12 text-center">What We Believe In ??</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-2xl p-8 text-center card-hover shadow-md">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-primary-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="heart" class="w-8 h-8 text-primary-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-warm-900">Kindness First</h3>
+                    <p class="text-gray-600">We treat every business and every visitor with care and respect.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 text-center card-hover shadow-md">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="shield" class="w-8 h-8 text-blue-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-warm-900">Honest Information</h3>
+                    <p class="text-gray-600">We work hard to keep our listings accurate and trustworthy.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 text-center card-hover shadow-md">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="globe" class="w-8 h-8 text-purple-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-warm-900">For Everyone</h3>
+                    <p class="text-gray-600">Our platform is free and welcoming to people from all walks of life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Helps -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-warm-900 mb-12 text-center">How We Help ??</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="search" class="w-6 h-6 text-primary-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-warm-900">Find What You Need</h3>
+                        <p class="text-gray-600">Search for any type of business and see what's open right now in your area.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="clock" class="w-6 h-6 text-blue-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-warm-900">Real-Time Status</h3>
+                        <p class="text-gray-600">Know instantly whether a place is open or closed before you head out.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="star" class="w-6 h-6 text-purple-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-warm-900">Honest Reviews</h3>
+                        <p class="text-gray-600">Read kind words from other visitors to help you choose wisely.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="navigation" class="w-6 h-6 text-orange-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-warm-900">Easy Directions</h3>
+                        <p class="text-gray-600">Get to your destination quickly with direct links to Google Maps.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Business Owners -->
+    <section class="py-16 bg-gradient-to-br from-primary-50 to-primary-100">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h2 class="text-3xl font-bold text-warm-900 mb-6">For Business Owners ??</h2>
+            <p class="text-lg text-gray-700 mb-8">
+                If you run a business, we'd love to welcome you to our community. 
+                Listing your place is free, simple, and helps more people discover what you offer.
+            </p>
+            <a href="/register?type=business" class="inline-block bg-primary-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-primary-600 transition shadow-lg">
+                Join Our Community Today
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center max-w-2xl">
+            <h2 class="text-3xl font-bold text-warm-900 mb-4">Have a Question? ??</h2>
+            <p class="text-gray-600 mb-6">
+                We're always happy to hear from you. Whether you have a question, suggestion, 
+                or just want to say hello — our door is always open.
+            </p>
+            <a href="/contact" class="inline-block bg-warm-900 text-white px-8 py-4 rounded-full font-semibold hover:bg-warm-800 transition">
+                Get in Touch
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-warm-900 text-white py-12 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 text-2xl font-bold mb-4">
+                        <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
+                        <span>OpenNearMe</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Your guide to places that never sleep</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 bg-warm-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-warm-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-warm-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-warm-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Explore</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/about" class="hover:text-primary-500 transition">About Us</a></li>
+                        <li><a href="/privacy" class="hover:text-primary-500 transition">Privacy Policy</a></li>
+                        <li><a href="/terms" class="hover:text-primary-500 transition">Terms of Service</a></li>
+                        <li><a href="/contact" class="hover:text-primary-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">More</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/help" class="hover:text-primary-500 transition">Help Center</a></li>
+                        <li><a href="/sitemap" class="hover:text-primary-500 transition">Sitemap</a></li>
+                        <li><a href="/register" class="hover:text-primary-500 transition">Join Us</a></li>
+                        <li><a href="/stories" class="hover:text-primary-500 transition">Stories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Get in Touch</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            contact@opennearme.online
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            +1 (555) 123-4567
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-warm-800 pt-8 text-center text-gray-400">
+                <p>© 2026 OpenNearMe.online - All Rights Reserved</p>
+                <p class="mt-2 text-sm">Made with ?? for night owls and early birds</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
