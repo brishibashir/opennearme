@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - OpenNearMe</title>
+    <meta name="description" content="Read the terms and conditions for using OpenNearMe.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#10b981', 600: '#059669' },
+                        warm: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#1c1917', 900: '#0c0a09' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section h2 { margin-top: 2rem; margin-bottom: 1rem; }
+        .content-section h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .content-section p { margin-bottom: 1rem; line-height: 1.7; }
+        .content-section ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .content-section li { margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body class="bg-warm-50 text-warm-800 flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-warm-900">
+                    <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
+                    <span>OpenNearMe</span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="text-warm-800 hover:text-primary-500 transition">Home</a>
+                    <a href="about.html" class="text-warm-800 hover:text-primary-500 transition">About</a>
+                    <a href="categories.html" class="text-warm-800 hover:text-primary-500 transition">Categories</a>
+                    <a href="contact.html" class="text-warm-800 hover:text-primary-500 transition">Contact</a>
+                </div>
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="login.html" class="px-4 py-2 text-warm-800 hover:text-primary-500 transition">Sign In</a>
+                    <a href="register.html" class="px-6 py-2 bg-primary-500 text-white rounded-full hover:bg-primary-600 transition">Sign Up</a>
+                </div>
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="index.html" class="block py-2 text-warm-800">Home</a>
+                <a href="about.html" class="block py-2 text-warm-800">About</a>
+                <a href="categories.html" class="block py-2 text-warm-800">Categories</a>
+                <a href="contact.html" class="block py-2 text-warm-800">Contact</a>
+                <div class="mt-4 flex flex-col gap-2">
+                    <a href="login.html" class="block py-2 text-center text-warm-800">Sign In</a>
+                    <a href="register.html" class="block py-2 text-center bg-primary-500 text-white rounded-full">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="bg-white border-b border-gray-100">
+        <div class="container mx-auto px-4 py-4">
+            <nav class="flex items-center gap-2 text-sm text-gray-600">
+                <a href="index.html" class="hover:text-primary-500 transition">Home</a>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                <span class="text-warm-900 font-medium">Terms of Service</span>
+            </nav>
+        </div>
+    </div>
+
+    <main class="flex-grow py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-12">
+                <div class="w-20 h-20 mx-auto mb-4 bg-primary-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="file-text" class="w-10 h-10 text-primary-500"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-warm-900 mb-4">Terms of Service ??</h1>
+                <p class="text-lg text-gray-600">Last updated: June 27, 2026</p>
+                <p class="text-gray-600 mt-4">Please read these terms carefully before using OpenNearMe.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md p-8 md:p-12 content-section">
+                
+                <h2 class="text-2xl font-bold text-warm-900">1. Acceptance of Terms</h2>
+                <p>By accessing and using OpenNearMe ("the Service"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use our Service.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">2. Description of Service</h2>
+                <p>OpenNearMe is a platform that helps users discover businesses and places that are open at various times. The Service provides information about business hours, locations, and user reviews.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">3. User Accounts</h2>
+                <p>When you create an account with us, you must provide accurate and complete information. You are responsible for:</p>
+                <ul>
+                    <li>Maintaining the confidentiality of your account</li>
+                    <li>All activities that occur under your account</li>
+                    <li>Notifying us of any unauthorized use</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-warm-900">4. Business Listings</h2>
+                <p>Business owners who register their businesses agree to:</p>
+                <ul>
+                    <li>Provide accurate and up-to-date information</li>
+                    <li>Keep business hours current</li>
+                    <li>Respond to customer inquiries professionally</li>
+                    <li>Not misuse the platform for spam or fraud</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-warm-900">5. User Conduct</h2>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>Use the Service for any unlawful purpose</li>
+                    <li>Post false or misleading reviews</li>
+                    <li>Harass other users or business owners</li>
+                    <li>Attempt to gain unauthorized access to the Service</li>
+                    <li>Scrape or collect data without permission</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-warm-900">6. Reviews and Content</h2>
+                <p>Users may submit reviews and comments. By submitting content, you:</p>
+                <ul>
+                    <li>Grant us a license to use, display, and distribute the content</li>
+                    <li>Represent that the content is accurate and truthful</li>
+                    <li>Agree not to post offensive or defamatory content</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-warm-900">7. Intellectual Property</h2>
+                <p>The Service and its original content, features, and functionality are owned by OpenNearMe and are protected by international copyright, trademark, and other intellectual property laws.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">8. Disclaimer of Warranties</h2>
+                <p>The Service is provided "as is" without warranties of any kind. We do not guarantee that:</p>
+                <ul>
+                    <li>The Service will be available at all times</li>
+                    <li>All business information is accurate</li>
+                    <li>The Service will meet your requirements</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold text-warm-900">9. Limitation of Liability</h2>
+                <p>In no event shall OpenNearMe be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">10. Termination</h2>
+                <p>We may terminate or suspend your account immediately, without prior notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">11. Governing Law</h2>
+                <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which OpenNearMe operates, without regard to its conflict of law provisions.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">12. Changes to Terms</h2>
+                <p>We reserve the right to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days notice prior to any new terms taking effect.</p>
+
+                <h2 class="text-2xl font-bold text-warm-900">13. Contact Information</h2>
+                <p>If you have any questions about these Terms, please contact us:</p>
+                <ul>
+                    <li>Email: contact@opennearme.online</li>
+                    <li>Phone: +1 (555) 123-4567</li>
+                </ul>
+
+                <div class="mt-8 p-6 bg-primary-50 rounded-xl border border-primary-200">
+                    <div class="flex gap-3">
+                        <i data-lucide="info" class="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <h3 class="font-semibold text-primary-800 mb-1">Questions?</h3>
+                            <p class="text-sm text-primary-700">
+                                If you have concerns about these terms, please 
+                                <a href="contact.html" class="underline hover:text-primary-800">contact us</a> 
+                                before using the Service.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-warm-900 text-white py-12 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 text-2xl font-bold mb-4">
+                        <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
+                        <span>OpenNearMe</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Your guide to places that never sleep</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Explore</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="about.html" class="hover:text-primary-500 transition">About Us</a></li>
+                        <li><a href="privacy.html" class="hover:text-primary-500 transition">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-primary-500 transition">Terms of Service</a></li>
+                        <li><a href="contact.html" class="hover:text-primary-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">More</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="categories.html" class="hover:text-primary-500 transition">Categories</a></li>
+                        <li><a href="register.html" class="hover:text-primary-500 transition">Join Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Get in Touch</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            contact@opennearme.online
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-warm-800 pt-8 text-center text-gray-400">
+                <p>© 2026 OpenNearMe.online - All Rights Reserved</p>
+                <p class="mt-2 text-sm">Made with ?? for night owls and early birds</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+    </script>
+</body>
+</html>
