@@ -4,100 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In - OpenNearMe</title>
-    <meta name="description" content="Sign in to your OpenNearMe account to discover places open now.">
-    
-    <!-- TailwindCSS -->
+    <meta name="description" content="Sign in to your OpenNearMe account.">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        primary: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                        },
-                        warm: {
-                            50: '#fafaf9',
-                            100: '#f5f5f4',
-                            800: '#1c1917',
-                            900: '#0c0a09',
-                        }
+                        primary: { 50: '#f0fdf4', 500: '#10b981', 600: '#059669' },
+                        warm: { 50: '#fafaf9', 800: '#1c1917', 900: '#0c0a09' }
                     }
                 }
             }
         }
     </script>
-    
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        }
-        .social-btn {
-            transition: all 0.3s ease;
-        }
-        .social-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-    </style>
 </head>
 <body class="bg-warm-50 min-h-screen flex flex-col">
-
-    <!-- Header -->
     <header class="bg-white shadow-sm">
         <nav class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
-                <a href="/" class="flex items-center gap-2 text-2xl font-bold text-warm-900">
+                <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-warm-900">
                     <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
                     <span>OpenNearMe</span>
                 </a>
-                <a href="/" class="text-warm-800 hover:text-primary-500 transition flex items-center gap-2">
-                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                    Back to Home
+                <a href="index.html" class="text-warm-800 hover:text-primary-500 transition flex items-center gap-2">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back to Home
                 </a>
             </div>
         </nav>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-1 flex items-center justify-center py-12 px-4">
         <div class="w-full max-w-md">
-            
-            <!-- Welcome Message -->
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-warm-900 mb-2">
-                    Welcome Back ??
-                </h1>
-                <p class="text-gray-600">
-                    We're glad to see you again. Let's find what's open together.
-                </p>
+                <h1 class="text-3xl font-bold text-warm-900 mb-2">Welcome Back ðŸŒ™</h1>
+                <p class="text-gray-600">We're glad to see you again. Let's find what's open together.</p>
             </div>
 
-            <!-- Login Form -->
             <div class="bg-white rounded-2xl shadow-lg p-8">
-                
-                <!-- Social Login Buttons -->
                 <div class="space-y-3 mb-6">
-                    <button class="social-btn w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition">
+                    <button class="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition">
                         <svg class="w-5 h-5" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -106,8 +55,7 @@
                         </svg>
                         <span class="font-medium text-gray-700">Continue with Google</span>
                     </button>
-                    
-                    <button class="social-btn w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#1877F2] text-white rounded-xl hover:bg-[#166FE5] transition">
+                    <button class="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#1877F2] text-white rounded-xl hover:bg-[#166FE5] transition">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                         </svg>
@@ -115,109 +63,43 @@
                     </button>
                 </div>
 
-                <!-- Divider -->
                 <div class="relative my-6">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-gray-500">or continue with email</span>
-                    </div>
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300"></div></div>
+                    <div class="relative flex justify-center text-sm"><span class="px-4 bg-white text-gray-500">or continue with email</span></div>
                 </div>
 
-                <!-- Email/Password Form -->
-                <form class="space-y-4">
+                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Login functionality will be connected to Supabase soon!');">
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address
-                        </label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <div class="relative">
                             <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                required
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                placeholder="your@email.com"
-                            >
+                            <input type="email" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="your@email.com">
                         </div>
                     </div>
-
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <label for="password" class="block text-sm font-medium text-gray-700">
-                                Password
-                            </label>
-                            <a href="/forgot-password" class="text-sm text-primary-500 hover:text-primary-600 transition">
-                                Forgot password?
-                            </a>
+                            <label class="block text-sm font-medium text-gray-700">Password</label>
+                            <a href="forgot-password.html" class="text-sm text-primary-500 hover:text-primary-600">Forgot password?</a>
                         </div>
                         <div class="relative">
                             <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                required
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                placeholder="••••••••"
-                            >
+                            <input type="password" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
                         </div>
                     </div>
-
                     <div class="flex items-center">
-                        <input 
-                            type="checkbox" 
-                            id="remember" 
-                            name="remember"
-                            class="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
-                        >
-                        <label for="remember" class="ml-2 text-sm text-gray-700">
-                            Remember me
-                        </label>
+                        <input type="checkbox" id="remember" class="w-4 h-4 text-primary-500 border-gray-300 rounded">
+                        <label for="remember" class="ml-2 text-sm text-gray-700">Remember me</label>
                     </div>
-
-                    <button 
-                        type="submit" 
-                        class="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold hover:bg-primary-600 transition shadow-lg"
-                    >
-                        Sign In
-                    </button>
+                    <button type="submit" class="w-full bg-primary-500 text-white py-3 rounded-xl font-semibold hover:bg-primary-600 transition shadow-lg">Sign In</button>
                 </form>
 
-                <!-- Sign Up Link -->
                 <div class="mt-6 text-center">
-                    <p class="text-gray-600">
-                        Don't have an account? 
-                        <a href="/register" class="text-primary-500 hover:text-primary-600 font-semibold transition">
-                            Join Us
-                        </a>
-                    </p>
+                    <p class="text-gray-600">Don't have an account? <a href="register.html" class="text-primary-500 hover:text-primary-600 font-semibold">Join Us</a></p>
                 </div>
             </div>
-
-            <!-- Footer Note -->
-            <p class="text-center text-sm text-gray-500 mt-8">
-                By signing in, you agree to our 
-                <a href="/terms" class="text-primary-500 hover:underline">Terms of Service</a> 
-                and 
-                <a href="/privacy" class="text-primary-500 hover:underline">Privacy Policy</a>
-            </p>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-warm-900 text-white py-6">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400 text-sm">
-                © 2026 OpenNearMe.online - Made with ?? for night owls and early birds
-            </p>
-        </div>
-    </footer>
-
-    <script>
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
