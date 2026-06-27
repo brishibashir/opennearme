@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Data - Final Fixed Version</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2.39.3"></script>
+    <style>
+        body { font-family: Arial; max-width: 900px; margin: 20px auto; padding: 20px; background: #f0fdf4; }
+        h1 { color: #059669; }
+        .box { background: white; padding: 20px; margin: 15px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border: 2px solid #ddd; border-radius: 5px; font-family: monospace; box-sizing: border-box; }
+        button { padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; margin: 5px; }
+        button:hover { background: #059669; }
+        button:disabled { background: #9ca3af; cursor: not-allowed; }
+        #log { background: #1c1917; color: #10b981; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 13px; line-height: 1.6; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #60a5fa; }
+        .warn { color: #fbbf24; }
+        .progress-bar { background: #e5e7eb; height: 30px; border-radius: 15px; overflow: hidden; margin: 15px 0; }
+        .progress-fill { background: linear-gradient(90deg, #10b981, #059669); height: 100%; width: 0%; transition: width 0.5s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1> Import Data to Supabase (Final Fixed)</h1>
+    <p><b>Fixed URLs:</b> Using /json/ subdirectory</p>
+    
+    <div class="box">
+        <h2>🔑 Configuration</h2>
+        <label>Anon Key:</label>
+        <textarea id="anonKey" rows="3">sb_publishable_rCVLQUhej25Uyiz95pltAA_Wk9UF6YS</textarea>
+        <button onclick="testConnection()"> Test Connection</button>
+    </div>
+
+    <div class="box">
+        <h2>📥 Import Data</h2>
+        <div class="progress-bar">
+            <div id="progress" class="progress-fill">0%</div>
+        </div>
+        <button onclick="importAll()">🚀 Import Everything</button>
+        <button onclick="importContinents()">🌍 Continents</button>
+        <button onclick="importCountries()">🌎 Countries</button>
+        <button onclick="importStates()">️ States</button>
+        <button onclick="importCities()">🏙️ Cities</button>
+        <button onclick="importCategories()">🏷️ Categories</button>
+    </div>
+
+    <div id="log">Ready. Click Import Everything to start.</div>
+
+    <script>
+        let supabaseClient = null;
+        const SUPABASE_URL = 'https://mozzwbvoywtohixylgsp.supabase.co';
+        
+        // ✅ الروابط الصحيحة مع مجلد json/
+        const DATA_URLS = {
+            countries: 'https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/json/countries.json',
+            states: 'https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/json/states.json',
+            cities: 'https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/json/cities.json'
+        };
+
+        function log(msg, type = 'info') {
+            const div = document.getElementById('log');
+            const colors = { success: '#10b981', error: '#ef4444', info: '#60a5fa', warn: '#fbbf24' };
+            div.innerHTML += `<div style="color:${colors[type] || '#10b981'}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+            div.scrollTop = div.scrollHeight;
+        }
+
+        function setProgress(percent, text) {
+            const bar = document.getElementById('progress');
+            bar.style.width = percent + '%';
+            bar.textContent = text || (percent + '%');
+        }
+
+        function initClient() {
+            const key = document.getElementById('anonKey').value.trim();
+            if (!key) { log('❌ Please enter Anon Key', 'error'); return false; }
+            try {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, key);
+                log('✅ Client initialized', 'success');
+                return true;
+            } catch (e) { log('❌ Error: ' + e.message, 'error'); return false; }
+        }
+
+        async function testConnection() {
+            if (!initClient()) return;
+            try {
+                const { error } = await supabaseClient.from('continents').select('count', { count: 'exact', head: true });
+                if (error) log('❌ Failed: ' + error.message, 'error');
+                else log('✅ Connection successful!', 'success');
+            } catch (e) { log('❌ Error: ' + e.message, 'error'); }
+        }
+
+        async function fetchJSON(url) {
+            log('📥 Fetching: ' + url, 'info');
+            const response = await fetch(url);
+            if (!response.ok) {
+                log(' HTTP ' + response.status + ' - URL may be wrong!', 'error');
+                throw new Error('HTTP ' + response.status);
+            }
+            return await response.json();
+        }
+
+        async function insertBatch(tableName, records, batchSize = 100) {
+            let inserted = 0;
+            for (let i = 0; i < records.length; i += batchSize) {
+                const batch = records.slice(i, i + batchSize);
+                const { error } = await supabaseClient.from(tableName).insert(batch);
+                if (error) {
+                    log('⚠️ Error: ' + error.message, 'warn');
+                } else {
+                    inserted += batch.length;
+                }
+            }
+            return inserted;
+        }
+
+        async function importContinents() {
+            if (!initClient()) return;
+            try {
+                log(' Importing continents...', 'info');
+                const continents = [
+                    { id: 'north-america', name: 'North America', name_ar: 'أمريكا الشمالية', emoji: '🌎', countries_count: 23 },
+                    { id: 'south-america', name: 'South America', name_ar: 'أمريكا الجنوبية', emoji: '🌎', countries_count: 12 },
+                    { id: 'europe', name: 'Europe', name_ar: 'أوروبا', emoji: '🌍', countries_count: 44 },
+                    { id: 'asia', name: 'Asia', name_ar: 'آسيا', emoji: '🌏', countries_count: 48 },
+                    { id: 'africa', name: 'Africa', name_ar: 'أفريقيا', emoji: '🌍', countries_count: 54 },
+                    { id: 'oceania', name: 'Oceania', name_ar: 'أوقيانوسيا', emoji: '🌏', countries_count: 14 },
+                    { id: 'antarctica', name: 'Antarctica', name_ar: 'أنتاركتيكا', emoji: '🧊', countries_count: 0 }
+                ];
+                const { error } = await supabaseClient.from('continents').upsert(continents);
+                if (error) throw error;
+                log('✅ Imported ' + continents.length + ' continents', 'success');
+            } catch (e) { log('❌ Error: ' + e.message, 'error'); }
+        }
+
+        async function importCountries() {
+            if (!initClient()) return;
+            try {
+                const countries = await fetchJSON(DATA_URLS.countries);
+                log('📊 Found ' + countries.length.toLocaleString() + ' countries', 'info');
+                const continentMap = {
+                    'Asia': 'asia', 'Europe': 'europe', 'Africa': 'africa',
+                    'North America': 'north-america', 'South America': 'south-america',
+                    'Oceania': 'oceania', 'Antarctica': 'antarctica'
+                };
+                const processed = countries.map(c => ({
+                    id: (c.iso2 || '').toLowerCase(),
+                    name: c.name, iso2: c.iso2, iso3: c.iso3, capital: c.capital,
+                    continent_id: continentMap[c.continent] || null,
+                    region: c.region, subregion: c.subregion,
+                    latitude: parseFloat(c.latitude) || null,
+                    longitude: parseFloat(c.longitude) || null,
+                    currency: c.currency || null
+                }));
+                const inserted = await insertBatch('countries', processed, 50);
+                log('✅ Imported ' + inserted + ' countries', 'success');
+            } catch (e) { log('❌ Error: ' + e.message, 'error'); }
+        }
+
+        async function importStates() {
+            if (!initClient()) return;
+            try {
+                const states = await fetchJSON(DATA_URLS.states);
+                log('📊 Found ' + states.length.toLocaleString() + ' states', 'info');
+                const processed = states.map(s => ({
+                    id: (s.country_code || '').toLowerCase() + '-' + (s.id || s.iso2 || ''),
+                    name: s.name, country_id: (s.country_code || '').toLowerCase(),
+                    state_code: s.iso2 || s.state_code,
+                    latitude: parseFloat(s.latitude) || null,
+                    longitude: parseFloat(s.longitude) || null
+                }));
+                const inserted = await insertBatch('states', processed, 100);
+                log('✅ Imported ' + inserted + ' states', 'success');
+            } catch (e) { log(' Error: ' + e.message, 'error'); }
+        }
+
+        async function importCities() {
+            if (!initClient()) return;
+            try {
+                const cities = await fetchJSON(DATA_URLS.cities);
+                log('📊 Found ' + cities.length.toLocaleString() + ' cities', 'info');
+                const processed = cities.map(c => ({
+                    id: (c.country_code || '').toLowerCase() + '-' + c.id,
+                    name: c.name,
+                    state_id: (c.country_code || '').toLowerCase() + '-' + c.state_id,
+                    country_id: (c.country_code || '').toLowerCase(),
+                    latitude: parseFloat(c.latitude) || null,
+                    longitude: parseFloat(c.longitude) || null,
+                    wiki_data_id: c.wikiDataId
+                }));
+                let inserted = 0;
+                const batchSize = 100;
+                for (let i = 0; i < processed.length; i += batchSize) {
+                    const batch = processed.slice(i, i + batchSize);
+                    const { error } = await supabaseClient.from('cities').insert(batch);
+                    if (!error) inserted += batch.length;
+                    const percent = Math.round(((i + batchSize) / processed.length) * 100);
+                    setProgress(percent, percent + '% - ' + inserted.toLocaleString() + ' cities');
+                    await new Promise(r => setTimeout(r, 50));
+                }
+                log('✅ Imported ' + inserted.toLocaleString() + ' cities', 'success');
+            } catch (e) { log('❌ Error: ' + e.message, 'error'); }
+        }
+
+        async function importCategories() {
+            if (!initClient()) return;
+            try {
+                const categories = [
+                    { id: 'cafes', name: 'Quiet Corners', name_ar: 'الركن الهادئ', emoji: '', color: 'orange', icon: 'coffee' },
+                    { id: 'grocery', name: 'Daily Essentials', name_ar: 'الاحتياجات اليومية', emoji: '🛒', color: 'blue', icon: 'shopping-cart' },
+                    { id: 'fuel', name: 'On The Way', name_ar: 'في الطريق', emoji: '⛽', color: 'green', icon: 'fuel' },
+                    { id: 'health', name: 'Health & Care', name_ar: 'الصحة والرعاية', emoji: '💊', color: 'red', icon: 'heart-pulse' },
+                    { id: 'food', name: 'Comfort Meals', name_ar: 'وجبات مريحة', emoji: '🍕', color: 'yellow', icon: 'utensils' },
+                    { id: 'convenience', name: 'Friendly Neighborhood', name_ar: 'الحي الودود', emoji: '🏪', color: 'purple', icon: 'store' },
+                    { id: 'retail', name: 'Little Treats', name_ar: 'مكافآت صغيرة', emoji: '🛍️', color: 'pink', icon: 'shopping-bag' },
+                    { id: 'wellness', name: 'Wellness & Support', name_ar: 'العافية والدعم', emoji: '🏥', color: 'teal', icon: 'heart' }
+                ];
+                const { error } = await supabaseClient.from('categories').upsert(categories);
+                if (error) throw error;
+                log('✅ Imported ' + categories.length + ' categories', 'success');
+            } catch (e) { log('❌ Error: ' + e.message, 'error'); }
+        }
+
+        async function importAll() {
+            if (!initClient()) return;
+            log('🚀 Starting full import...', 'info');
+            setProgress(5, 'Starting...');
+            await importContinents(); setProgress(15, 'Continents ✅');
+            await importCountries(); setProgress(35, 'Countries ✅');
+            await importStates(); setProgress(55, 'States ✅');
+            await importCities(); setProgress(95, 'Cities ✅');
+            await importCategories(); setProgress(100, 'Complete! 🎉');
+            log(' All data imported successfully!', 'success');
+        }
+    </script>
+</body>
+</html>
