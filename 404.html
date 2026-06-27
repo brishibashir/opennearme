@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - OpenNearMe</title>
+    <meta name="description" content="The page you're looking for doesn't exist.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#10b981', 600: '#059669' },
+                        warm: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#1c1917', 900: '#0c0a09' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-warm-50 min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-warm-900">
+                    <i data-lucide="moon" class="w-8 h-8 text-primary-500"></i>
+                    <span>OpenNearMe</span>
+                </a>
+                <a href="index.html" class="text-warm-800 hover:text-primary-500 transition flex items-center gap-2">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back to Home
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center py-12 px-4">
+        <div class="w-full max-w-2xl text-center">
+            <div class="text-9xl font-bold text-primary-500 mb-6">404</div>
+            <h1 class="text-4xl font-bold text-warm-900 mb-4">Oops! Page Not Found ??</h1>
+            <p class="text-xl text-gray-600 mb-8">
+                It seems the page you're looking for has wandered off into the night. 
+                Don't worry — let's help you find your way back.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html" class="px-8 py-4 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition shadow-lg flex items-center justify-center gap-2">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    Back to Home
+                </a>
+                <a href="categories.html" class="px-8 py-4 border-2 border-primary-500 text-primary-500 rounded-xl font-semibold hover:bg-primary-50 transition flex items-center justify-center gap-2">
+                    <i data-lucide="compass" class="w-5 h-5"></i>
+                    Browse Categories
+                </a>
+            </div>
+            <div class="mt-12 p-6 bg-warm-50 rounded-2xl border border-gray-200">
+                <h3 class="font-semibold text-warm-900 mb-3 flex items-center justify-center gap-2">
+                    <i data-lucide="search" class="w-5 h-5 text-primary-500"></i>
+                    Looking for something specific?
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    Try searching for what you need, or explore our popular categories below.
+                </p>
+                <div class="flex flex-wrap justify-center gap-2 mt-4">
+                    <a href="categories.html" class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-primary-500 transition">? Quiet Corners</a>
+                    <a href="categories.html" class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-primary-500 transition">?? Daily Essentials</a>
+                    <a href="categories.html" class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-primary-500 transition">? On The Way</a>
+                    <a href="categories.html" class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm hover:border-primary-500 transition">?? Health & Care</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-warm-900 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">© 2026 OpenNearMe.online - Made with ?? for night owls and early birds</p>
+        </div>
+    </footer>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
