@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Data to Supabase - OpenNearMe</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #fafaf9 100%);
+            color: #1c1917;
+        }
+        h1 { color: #059669; margin-bottom: 10px; font-size: 2.5em; }
+        .subtitle { color: #6b7280; margin-bottom: 30px; }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .config-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .config-section h2 { color: #047857; margin-bottom: 15px; }
+        label { display: block; margin: 15px 0 5px; font-weight: 600; color: #374151; }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 5px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        button:disabled { 
+            background: #9ca3af; 
+            cursor: not-allowed;
+            transform: none;
+        }
+        button.danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        button.danger:hover { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+        button.success { background: linear-gradient(135deg, #10b981, #059669); }
+        #log {
+            background: #1c1917;
+            color: #10b981;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .success { color: #10b981; font-weight: bold; }
+        .error { color: #ef4444; font-weight: bold; }
+        .info { color: #60a5fa; }
+        .warn { color: #fbbf24; }
+        .progress {
+            background: #e5e7eb;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #10b981, #059669);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .step {
+            padding: 20px;
+            margin: 15px 0;
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            border-radius: 5px;
+        }
+        .step h3 { margin: 0 0 10px 0; color: #047857; font-size: 1.3em; }
+        .step p { color: #6b7280; margin-bottom: 10px; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .stat-number { font-size: 2em; font-weight: bold; color: #10b981; }
+        .stat-label { color: #6b7280; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Import Data to Supabase</h1>
+    <p class="subtitle">OpenNearMe.online - Data Import Tool</p>
+
+    <div class="warning">
+        <strong>⚠️ Important:</strong> This tool will import data from the GitHub repository into your Supabase database. 
+        Make sure you have created all required tables first (see setup guide).
+    </div>
+
+    <div class="config-section">
+        <h2>🔑 Step 1: Supabase Configuration</h2>
+        <p>Enter your Supabase credentials (from Settings → API):</p>
+        
+        <label>Project URL:</label>
+        <input type="text" id="supabaseUrl" placeholder="https://xxxxx.supabase.co" value="https://mozzwbvoywtohixylgsp.supabase.co">
+        
+        <label>Anon Key (publishable key):</label>
+        <textarea id="supabaseKey" rows="3" placeholder="sb_publishable_..."></textarea>
+        
+        <button onclick="testConnection()">🔌 Test Connection</button>
+    </div>
+
+    <div class="config-section">
+        <h2>📥 Step 2: Import Data</h2>
+        
+        <div class="step">
+            <h3>2.1 Import Continents (7 records)</h3>
+            <button onclick="importContinents()">🌍 Import Continents</button>
+        </div>
+
+        <div class="step">
+            <h3>2.2 Import Countries (~250 records)</h3>
+            <button onclick="importCountries()">🌎 Import Countries</button>
+        </div>
+
+        <div class="step">
+            <h3>2.3 Import States (~5,000 records)</h3>
+            <button onclick="importStates()">🗺️ Import States</button>
+        </div>
+
+        <div class="step">
+            <h3>2.4 Import Cities (~150,000 records) ⚠️ This may take 5-10 minutes</h3>
+            <div class="progress">
+                <div id="citiesProgress" class="progress-bar">0%</div>
+            </div>
+            <button onclick="importCities()">🏙️ Import All Cities (Fast)</button>
+            <button onclick="importCitiesBatch()" class="success">🏙️ Import Cities (Safe Mode - Recommended)</button>
+        </div>
+
+        <div class="step">
+            <h3>2.5 Import Categories (8 records)</h3>
+            <button onclick="importCategories()">🏷️ Import Categories</button>
+        </div>
+
+        <div class="step">
+            <h3>2.6 Import All Data (One Click)</h3>
+            <p>This will import everything in order. Recommended for first-time setup.</p>
+            <div class="progress">
+                <div id="totalProgress" class="progress-bar">0%</div>
+            </div>
+            <button onclick="importAll()" class="success">🚀 Import Everything</button>
+        </div>
+    </div>
+
+    <div id="log"></div>
+
+    <script>
+        let supabase = null;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const p = document.createElement('div');
+            p.className = type;
+            p.textContent = `[${time}] ${message}`;
+            logDiv.appendChild(p);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function initClient() {
+            const url = document.getElementById('supabaseUrl').value.trim();
+            const key = document.getElementById('supabaseKey').value.trim();
+            
+            if (!url || !key) {
+                log('❌ Please enter Supabase URL and Key', 'error');
+                return false;
+            }
+            
+            try {
+                supabase = window.supabase.createClient(url, key);
+                log('✅ Supabase client initialized', 'success');
+                return true;
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function testConnection() {
+            if (!initClient()) return;
+            
+            try {
+                log('🔌 Testing connection...', 'info');
+                const { data, error } = await supabase.from('continents').select('count', { count: 'exact', head: true });
+                
+                if (error) {
+                    log(`❌ Connection failed: ${error.message}`, 'error');
+                    log('💡 Make sure tables are created in Supabase first', 'warn');
+                } else {
+                    log('✅ Connection successful! Database is ready.', 'success');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        async function fetchJSON(url) {
+            log(`📥 Fetching: ${url}`, 'info');
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        }
+
+        async function insertBatch(tableName, records, batchSize = 100) {
+            let inserted = 0;
+            const errors = [];
+            
+            for (let i = 0; i < records.length; i += batchSize) {
+                const batch = records.slice(i, i + batchSize);
+                const { error } = await supabase.from(tableName).insert(batch);
+                if (error) {
+                    errors.push(error.message);
+                    log(`⚠️ Batch error: ${error.message}`, 'warn');
+                } else {
+                    inserted += batch.length;
+                }
+            }
+            return { inserted, errors };
+        }
+
+        // ========== Import Continents ==========
+        async function importContinents() {
+            if (!initClient()) return;
+            
+            try {
+                log('🌍 Importing continents...', 'info');
+                
+                const continents = [
+                    { id: 'north-america', name: 'North America', name_ar: 'أمريكا الشمالية', emoji: '🌎', description: 'Discover hidden gems across 23 countries', countries_count: 23 },
+                    { id: 'south-america', name: 'South America', name_ar: 'أمريكا الجنوبية', emoji: '🌎', description: 'Explore vibrant cultures and places', countries_count: 12 },
+                    { id: 'europe', name: 'Europe', name_ar: 'أوروبا', emoji: '🌍', description: 'From Nordic lands to Mediterranean coasts', countries_count: 44 },
+                    { id: 'asia', name: 'Asia', name_ar: 'آسيا', emoji: '🌏', description: 'The largest continent with diverse cultures', countries_count: 48 },
+                    { id: 'africa', name: 'Africa', name_ar: 'أفريقيا', emoji: '🌍', description: 'Rich heritage and growing communities', countries_count: 54 },
+                    { id: 'oceania', name: 'Oceania', name_ar: 'أوقيانوسيا', emoji: '🌏', description: 'Islands and continents down under', countries_count: 14 },
+                    { id: 'antarctica', name: 'Antarctica', name_ar: 'أنتاركتيكا', emoji: '🧊', description: 'Research stations and brave explorers', countries_count: 0 }
+                ];
+
+                const { error } = await supabase.from('continents').upsert(continents);
+                if (error) throw error;
+                
+                log(`✅ Imported ${continents.length} continents successfully`, 'success');
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ========== Import Countries ==========
+        async function importCountries() {
+            if (!initClient()) return;
+            
+            try {
+                log('🌎 Fetching countries from GitHub...', 'info');
+                const countries = await fetchJSON('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries.json');
+                
+                log(`📊 Found ${countries.length.toLocaleString()} countries`, 'info');
+                log('🔄 Processing...', 'info');
+
+                const continentMap = {
+                    'Asia': 'asia',
+                    'Europe': 'europe',
+                    'Africa': 'africa',
+                    'North America': 'north-america',
+                    'South America': 'south-america',
+                    'Oceania': 'oceania',
+                    'Antarctica': 'antarctica'
+                };
+
+                const processed = countries.map(c => ({
+                    id: c.iso2?.toLowerCase() || c.id?.toString(),
+                    name: c.name,
+                    iso2: c.iso2,
+                    iso3: c.iso3,
+                    capital: c.capital,
+                    continent_id: continentMap[c.continent] || null,
+                    region: c.region,
+                    subregion: c.subregion,
+                    latitude: parseFloat(c.latitude) || null,
+                    longitude: parseFloat(c.longitude) || null,
+                    currency: c.currency || null,
+                    languages: c.languages?.join(',') || null
+                }));
+
+                log('📤 Inserting into database...', 'info');
+                const { inserted, errors } = await insertBatch('countries', processed, 50);
+                
+                log(`✅ Imported ${inserted} countries successfully`, 'success');
+                if (errors.length > 0) {
+                    log(`⚠️ ${errors.length} errors occurred`, 'warn');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ========== Import States ==========
+        async function importStates() {
+            if (!initClient()) return;
+            
+            try {
+                log('🗺️ Fetching states from GitHub...', 'info');
+                const states = await fetchJSON('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/states.json');
+                
+                log(`📊 Found ${states.length.toLocaleString()} states`, 'info');
+                log('🔄 Processing...', 'info');
+
+                const processed = states.map(s => ({
+                    id: `${s.country_code?.toLowerCase()}-${s.id || s.iso2}`,
+                    name: s.name,
+                    country_id: s.country_code?.toLowerCase(),
+                    state_code: s.iso2 || s.state_code,
+                    latitude: parseFloat(s.latitude) || null,
+                    longitude: parseFloat(s.longitude) || null
+                }));
+
+                log('📤 Inserting into database...', 'info');
+                const { inserted, errors } = await insertBatch('states', processed, 100);
+                
+                log(`✅ Imported ${inserted} states successfully`, 'success');
+                if (errors.length > 0) {
+                    log(`⚠️ ${errors.length} errors occurred`, 'warn');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ========== Import Cities ==========
+        async function importCities() {
+            if (!initClient()) return;
+            
+            try {
+                log('🏙️ Fetching cities from GitHub... (this may take a while)', 'info');
+                const cities = await fetchJSON('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json');
+                
+                log(`📊 Found ${cities.length.toLocaleString()} cities`, 'info');
+                log('🔄 Processing...', 'info');
+
+                const processed = cities.map(c => ({
+                    id: `${c.country_code?.toLowerCase()}-${c.id}`,
+                    name: c.name,
+                    state_id: `${c.country_code?.toLowerCase()}-${c.state_id}`,
+                    country_id: c.country_code?.toLowerCase(),
+                    latitude: parseFloat(c.latitude) || null,
+                    longitude: parseFloat(c.longitude) || null,
+                    wiki_data_id: c.wikiDataId
+                }));
+
+                log('📤 Inserting into database...', 'info');
+                const { inserted, errors } = await insertBatch('cities', processed, 200);
+                
+                log(`✅ Imported ${inserted.toLocaleString()} cities successfully`, 'success');
+                if (errors.length > 0) {
+                    log(`⚠️ ${errors.length} errors occurred`, 'warn');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ========== Import Cities in Safe Batches ==========
+        async function importCitiesBatch() {
+            if (!initClient()) return;
+            
+            try {
+                log('🏙️ Fetching cities (safe mode)...', 'info');
+                const cities = await fetchJSON('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json');
+                
+                log(`📊 Found ${cities.length.toLocaleString()} cities`, 'info');
+                
+                const progressBar = document.getElementById('citiesProgress');
+                const batchSize = 50;
+                let inserted = 0;
+                const total = cities.length;
+
+                for (let i = 0; i < total; i += batchSize) {
+                    const batch = cities.slice(i, i + batchSize).map(c => ({
+                        id: `${c.country_code?.toLowerCase()}-${c.id}`,
+                        name: c.name,
+                        state_id: `${c.country_code?.toLowerCase()}-${c.state_id}`,
+                        country_id: c.country_code?.toLowerCase(),
+                        latitude: parseFloat(c.latitude) || null,
+                        longitude: parseFloat(c.longitude) || null,
+                        wiki_data_id: c.wikiDataId
+                    }));
+
+                    const { error } = await supabase.from('cities').insert(batch);
+                    if (!error) inserted += batch.length;
+                    
+                    const percent = Math.round(((i + batchSize) / total) * 100);
+                    progressBar.style.width = percent + '%';
+                    progressBar.textContent = `${percent}% (${inserted.toLocaleString()} / ${total.toLocaleString()})`;
+                    
+                    await new Promise(r => setTimeout(r, 50));
+                }
+                
+                log(`✅ Imported ${inserted.toLocaleString()} cities safely`, 'success');
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ========== Import Categories ==========
+        async function importCategories() {
+            if (!initClient()) return;
+            
+            try {
+                log('🏷️ Importing categories...', 'info');
+                
+                const categories = [
+                    { id: 'cafes', name: 'Quiet Corners', name_ar: 'الركن الهادئ', emoji: '☕', description: 'A warm cup and a calm moment', description_ar: 'كوب دافئ ولحظة هادئة', color: 'orange', icon: 'coffee' },
+                    { id: 'grocery', name: 'Daily Essentials', name_ar: 'الاحتياجات اليومية', emoji: '🛒', description: 'The things you rely on every day', description_ar: 'الأشياء التي تعتمد عليها كل يوم', color: 'blue', icon: 'shopping-cart' },
+                    { id: 'fuel', name: 'On The Way', name_ar: 'في الطريق', emoji: '⛽', description: 'Smooth travels start here', description_ar: 'رحلات سلسة تبدأ من هنا', color: 'green', icon: 'fuel' },
+                    { id: 'health', name: 'Health & Care', name_ar: 'الصحة والرعاية', emoji: '💊', description: 'Gentle support when you need it', description_ar: 'دعم لطيف عندما تحتاجه', color: 'red', icon: 'heart-pulse' },
+                    { id: 'food', name: 'Comfort Meals', name_ar: 'وجبات مريحة', emoji: '🍕', description: 'A warm meal whenever you would like', description_ar: 'وجبة دافئة متى شئت', color: 'yellow', icon: 'utensils' },
+                    { id: 'convenience', name: 'Friendly Neighborhood', name_ar: 'الحي الودود', emoji: '🏪', description: 'Your friendly corner', description_ar: 'ركنك الودود', color: 'purple', icon: 'store' },
+                    { id: 'retail', name: 'Little Treats', name_ar: 'مكافآت صغيرة', emoji: '🛍️', description: 'Small joys that make the day brighter', description_ar: 'فرح صغير يجعل يومك أكثر إشراقاً', color: 'pink', icon: 'shopping-bag' },
+                    { id: 'wellness', name: 'Wellness & Support', name_ar: 'العافية والدعم', emoji: '🏥', description: 'Caring hands ready to help', description_ar: 'أيدي راعية جاهزة للمساعدة', color: 'teal', icon: 'heart' }
+                ];
+
+                const { error } = await supabase.from('categories').upsert(categories);
+                if (error) throw error;
+                
+                log(`✅ Imported ${categories.length} categories successfully`, 'success');
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ========== Import All ==========
+        async function importAll() {
+            if (!initClient()) return;
+            
+            log('🚀 Starting full import...', 'info');
+            log('⏰ This may take 10-15 minutes', 'warn');
+            
+            const progressBar = document.getElementById('totalProgress');
+            let progress = 0;
+
+            // Import Continents
+            await importContinents();
+            progress = 10;
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = `${progress}% - Continents Done`;
+
+            // Import Countries
+            await importCountries();
+            progress = 30;
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = `${progress}% - Countries Done`;
+
+            // Import States
+            await importStates();
+            progress = 50;
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = `${progress}% - States Done`;
+
+            // Import Cities (safe mode)
+            log('🏙️ Starting cities import...', 'info');
+            await importCitiesBatch();
+            progress = 90;
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = `${progress}% - Cities Done`;
+
+            // Import Categories
+            await importCategories();
+            progress = 100;
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = `${progress}% - Complete!`;
+            
+            log('🎉 All data imported successfully!', 'success');
+            log('💡 You can now close this page and start using your website', 'info');
+        }
+    </script>
+</body>
+</html>
